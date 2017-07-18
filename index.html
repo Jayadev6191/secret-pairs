@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.1/vue.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+  <title>Memory Game</title>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h3>Time: {{timer}} </h3>
+      <h1>Secret Pairs</h1>
+      <h3>Moves: {{moves}}</h3>
+    </header>
+    <section id="container">
+      <div class="img-placeholder" v-for="(obj, index) in images.slice(0).concat(images)">
+        <div :idx="obj.id">
+          <div v-show="selectedIndexes.indexOf(index) === -1 && matchedIndexes.indexOf(obj.id) === -1">
+            <img src="logo.png" @click="flip(obj.id,index)"/>
+          </div>
+          <div  v-show="selectedIndexes.indexOf(index) > -1 || matchedIndexes.indexOf(obj.id) > -1">
+            <img class="front" :src="obj.url" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script type="text/javascript" src="app.js"></script>
+</body>
+</html>
