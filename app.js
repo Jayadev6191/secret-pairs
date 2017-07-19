@@ -5,7 +5,7 @@
 //   }
 // });
 
-var frameworks = new Vue({
+var secretPairs = new Vue({
   el: "#app",
   data() {
     return {
@@ -60,6 +60,7 @@ var frameworks = new Vue({
           id: 11
         }
       ],
+      finalArray: [],
       selectedIndexes: [],
       cardIndexes: [],
       matchedIndexes: [],
@@ -69,7 +70,9 @@ var frameworks = new Vue({
     };
   },
   mounted() {
-    console.log("hello");
+    this.images = this.images.slice(0).concat(this.images);
+    this.finalArray = this.randomizeCards(this.images);
+    console.log(this.finalArray);
     var counter = 0;
     String.prototype.toHHMMSS = function() {
       var sec_num = parseInt(this, 10);
@@ -94,31 +97,56 @@ var frameworks = new Vue({
         clearInterval(timer);
       }
       counter++;
-      console.log(counter.toString().toHHMMSS());
       this.timer = counter.toString().toHHMMSS();
     }, 1000);
   },
   methods: {
     flip(card_id, index) {
-      this.moves++;
-      this.selectedIndexes.push(index);
-      this.cardIndexes.push(card_id);
-      if (this.selectedIndexes.length === 2) {
-        if (this.cardIndexes[0] === this.cardIndexes[1]) {
-          this.matchedIndexes.push(card_id);
-          if (this.images.length === this.matchedIndexes.length) {
-            this.endGame = true;
-            alert("Game Over");
-          }
-          this.selectedIndexes = [];
-          this.cardIndexes = [];
-        } else {
-          setTimeout(() => {
+      // if (this.selectedIndexes.length > 2) {
+      //   console.log("hello");
+      //   return;
+      // }
+
+      if (this.selectedIndexes.length < 2) {
+        this.moves++;
+        this.selectedIndexes.push(index);
+        this.cardIndexes.push(card_id);
+
+        if (this.selectedIndexes.length === 2) {
+          if (this.cardIndexes[0] === this.cardIndexes[1]) {
+            this.matchedIndexes.push(card_id);
+            if (this.finalArray.length / 2 === this.matchedIndexes.length) {
+              this.endGame = true;
+              alert("Game Over");
+            }
             this.selectedIndexes = [];
             this.cardIndexes = [];
-          }, 500);
+          } else {
+            setTimeout(() => {
+              this.selectedIndexes = [];
+              this.cardIndexes = [];
+            }, 500);
+          }
         }
       }
+    },
+    randomizeCards(array) {
+      var m = array.length,
+        t,
+        i;
+      // While there remain elements to shuffle…
+      while (m) {
+        // Pick a remaining element…
+        i = Math.floor(Math.random() * m--);
+
+        // And swap it with the current element.
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+      }
+
+      return array;
+      // return images;
     }
   }
 });

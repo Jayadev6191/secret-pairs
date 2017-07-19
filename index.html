@@ -19,10 +19,10 @@
       <h3>Moves: {{moves}}</h3>
     </header>
     <section id="container">
-      <div class="img-placeholder" v-for="(obj, index) in images.slice(0).concat(images)">
+      <div class="img-placeholder" v-for="(obj, index) in finalArray">
         <div :idx="obj.id">
           <div v-show="selectedIndexes.indexOf(index) === -1 && matchedIndexes.indexOf(obj.id) === -1">
-            <img src="logo.png" @click="flip(obj.id,index)"/>
+            <img src="logo.png" @click="selectedIndexes.length <= 2 ? flip(obj.id,index) : null"/>
           </div>
           <div  v-show="selectedIndexes.indexOf(index) > -1 || matchedIndexes.indexOf(obj.id) > -1">
             <img class="front" :src="obj.url" />
